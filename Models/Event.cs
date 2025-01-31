@@ -12,6 +12,6 @@
         public int UserID { get; set; }
 
         // Navigation property
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

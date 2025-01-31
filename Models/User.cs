@@ -8,6 +8,6 @@
         public required string TextColor { get; set; }
 
         // Navigation property
-        public ICollection<Event> Events { get; set; }
+        public ICollection<Event>? Events { get; set; }
     }
 }
