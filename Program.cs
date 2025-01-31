@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using server.DB;
+using server.Controllers;
 using server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,5 +22,5 @@ app.MapGet("/", () => "Hello World!");
 //app.MapPost("/event", (Event newEvent) => EventDB.CreateEvent(newEvent));
 //app.MapPut("/event", (Event updateEvent) => EventDB.UpdateEvent(updateEvent));
 //app.MapDelete("/event/{id}", (int id) => EventDB.DeleteEvent(id));
-
+EventsController.MapUserEndpoints(app);
 app.Run();

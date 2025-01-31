@@ -2,7 +2,7 @@
 {
     public class Event
     {
-        public int ID { get; set; }
+        public int EventId { get; set; }
         public required string Title { get; set; }
         public required DateTime StartDate { get; set; }
         public required DateTime EndDate { get; set; }
