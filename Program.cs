@@ -16,4 +16,5 @@ app.MapGet("/", () => "Hello World!");
 //app.MapPut("/event", (Event updateEvent) => EventDB.UpdateEvent(updateEvent));
 //app.MapDelete("/event/{id}", (int id) => EventDB.DeleteEvent(id));
 UsersController.MapUserEndpoints(app);
+EventsController.MapEventEndpoints(app);
 app.Run();

@@ -20,7 +20,7 @@ namespace server.DB
             modelBuilder.Entity<User>()
                 .HasMany(user => user.Events)
                 .WithOne(e => e.User)
-                .HasForeignKey(e => e.UserID);
+                .HasForeignKey(e => e.UserId);
 
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Event>().ToTable("Events");

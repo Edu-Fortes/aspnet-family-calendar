@@ -9,7 +9,7 @@
         public required bool AllDay { get; set; }
 
         // Foreign key
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
         // Navigation property
         public User? User { get; set; }
