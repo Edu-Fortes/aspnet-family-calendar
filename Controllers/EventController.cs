@@ -17,13 +17,47 @@ namespace server.Controllers
 
         public static async Task<IResult> GetAllCalendarEvents(AppDbContext context)
         {
-            var events = await context.Events.ToListAsync();
+            var events = await context.Events
+                .Include(e => e.User)
+                .Select(e => new
+                {
+                    e.EventId,
+                    e.Title,
+                    e.StartDate,
+                    e.EndDate,
+                    e.AllDay,
+                    User = e.User != null ? new
+                    {
+                        e.User.UserId,
+                        e.User.Name,
+                        e.User.Color,
+                        e.User.TextColor
+                    } : null
+                })
+                .ToListAsync();
             return Results.Ok(events);
         }
 
         public static async Task<IResult> GetCalendarEvent(int id, AppDbContext context)
         {
-            var calendarEvent = await context.Events.FindAsync(id);
+            var calendarEvent = await context.Events
+                .Include(e => e.User)
+                .Select(e=> new
+                {
+                    e.EventId,
+                    e.Title,
+                    e.StartDate,
+                    e.EndDate,
+                    e.AllDay,
+                    User = e.User != null ? new
+                    {
+                        e.User.UserId,
+                        e.User.Name,
+                        e.User.Color,
+                        e.User.TextColor
+                    } : null
+                })
+                .FirstOrDefaultAsync(e => e.EventId == id);
             if (calendarEvent == null) return Results.NotFound();
             return Results.Ok(calendarEvent);
         }

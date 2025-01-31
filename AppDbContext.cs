@@ -20,7 +20,8 @@ namespace server.DB
             modelBuilder.Entity<User>()
                 .HasMany(user => user.Events)
                 .WithOne(e => e.User)
-                .HasForeignKey(e => e.UserId);
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Event>().ToTable("Events");
