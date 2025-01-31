@@ -11,7 +11,8 @@ namespace server.Controllers
             endpoints.MapGet("/users", GetAllUsers);
             endpoints.MapGet("/users/{id}", GetUser);
             endpoints.MapPost("/users", CreateUser);
-            endpoints.MapPut("/users/{id}", (int id, User user, AppDbContext context)=> UpdateUser(id, user, context));
+            endpoints.MapPut("/users/{id}", (int id, User user, AppDbContext context) => UpdateUser(id, user, context));
+            endpoints.MapDelete("/users/{id}", DeleteUser);
         }
 
         public static async Task<IResult> GetAllUsers(AppDbContext context)
@@ -52,6 +53,15 @@ namespace server.Controllers
             context.Users.Update(user);
             await context.SaveChangesAsync();
             return Results.Ok(user);
+        }
+
+        public static async Task<IResult> DeleteUser(int id, AppDbContext context)
+        {
+            var user = await context.Users.FindAsync(id);
+            if (user == null) return Results.NotFound();
+            context.Users.Remove(user);
+            await context.SaveChangesAsync();
+            return Results.NoContent();
         }
     }
 }
