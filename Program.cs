@@ -27,12 +27,12 @@ app.UseCors("AllowLocalhost4200");
 // Use HTTPS redirection
 app.UseHttpsRedirection();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    AppDbContext.Seed(context);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<AppDbContext>();
+//    AppDbContext.Seed(context);
+//}
 
 UsersController.MapUserEndpoints(app);
 EventsController.MapEventEndpoints(app);

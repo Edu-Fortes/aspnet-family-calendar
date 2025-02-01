@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using server.DB;
 using server.Models;
 
@@ -11,6 +10,7 @@ namespace server.Controllers
         {
             endpoints.MapGet("/users", GetAllUsers);
             endpoints.MapGet("/users/{id}", GetUser);
+            endpoints.MapGet("/users/{id}/events", (int id, AppDbContext context, DateTime? start, DateTime? end)=> GetUserEvents(id,context,start,end));
             endpoints.MapPost("/users", CreateUser);
             endpoints.MapPut("/users/{id}", (int id, User user, AppDbContext context) => UpdateUser(id, user, context));
             endpoints.MapDelete("/users/{id}", DeleteUser);
@@ -44,8 +44,8 @@ namespace server.Controllers
                     {
                         e.EventId,
                         e.Title,
-                        e.StartDate,
-                        e.EndDate,
+                        e.Start,
+                        e.End,
                         e.AllDay
                     }).ToList()
                 })
@@ -53,6 +53,29 @@ namespace server.Controllers
 
             if (user == null) return Results.NotFound();
             return Results.Ok(user);
+        }
+
+        public static async Task<IResult> GetUserEvents(int id, AppDbContext context, DateTime? start, DateTime? end)
+        {
+            var query = context.Events.AsQueryable();
+
+            if (start.HasValue) query = query.Where(e => e.Start >= start.Value);
+            if (end.HasValue) query = query.Where(e => e.End <= end.Value);
+
+            var userEvents = await query
+                .Where(e => e.UserId == id)
+                .Select(e => new
+                {
+                    e.EventId,
+                    e.Title,
+                    e.Start,
+                    e.End,
+                    e.AllDay
+                })
+                .ToListAsync();
+
+            if (userEvents == null) Results.NotFound();
+            return Results.Ok(userEvents);
         }
 
         public static async Task<IResult> CreateUser(User user, AppDbContext context)
