@@ -23,8 +23,8 @@ namespace server.Controllers
                 {
                     e.EventId,
                     e.Title,
-                    e.StartDate,
-                    e.EndDate,
+                    e.Start,
+                    e.End,
                     e.AllDay,
                     User = e.User != null ? new
                     {
@@ -46,8 +46,8 @@ namespace server.Controllers
                 {
                     e.EventId,
                     e.Title,
-                    e.StartDate,
-                    e.EndDate,
+                    e.Start,
+                    e.End,
                     e.AllDay,
                     User = e.User != null ? new
                     {
@@ -64,8 +64,8 @@ namespace server.Controllers
 
         public static async Task<IResult> CreateCalendarEvent(Event calendarEvent, AppDbContext context)
         {
-            calendarEvent.StartDate = calendarEvent.StartDate.ToUniversalTime();
-            calendarEvent.EndDate = calendarEvent.EndDate.ToUniversalTime();
+            calendarEvent.Start = calendarEvent.Start.ToUniversalTime();
+            calendarEvent.End = calendarEvent.End.ToUniversalTime();
 
             context.Events.Add(calendarEvent);
             await context.SaveChangesAsync();
@@ -77,8 +77,8 @@ namespace server.Controllers
             var calendarEvent = await context.Events.FindAsync(id);
             if (calendarEvent == null) return Results.NotFound();
 
-            calendarEvent.StartDate = updateCalendarEvent.StartDate;
-            calendarEvent.EndDate = updateCalendarEvent.EndDate;
+            calendarEvent.Start = updateCalendarEvent.Start;
+            calendarEvent.End = updateCalendarEvent.End;
             calendarEvent.AllDay = updateCalendarEvent.AllDay;
             calendarEvent.Title = updateCalendarEvent.Title;
             calendarEvent.User = updateCalendarEvent.User;
