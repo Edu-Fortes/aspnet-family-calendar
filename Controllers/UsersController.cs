@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.DB;
 using server.Models;
+using System.Text.Json;
 
 namespace server.Controllers
 {
@@ -10,7 +11,7 @@ namespace server.Controllers
         {
             endpoints.MapGet("/users", GetAllUsers);
             endpoints.MapGet("/users/{id}", GetUser);
-            endpoints.MapGet("/users/{id}/events", (int id, AppDbContext context, DateTime? start, DateTime? end)=> GetUserEvents(id,context,start,end));
+            endpoints.MapGet("/users/{id}/events", (int id, AppDbContext context, DateTime? start, DateTime? end) => GetUserEvents(id, context, start, end));
             endpoints.MapPost("/users", CreateUser);
             endpoints.MapPut("/users/{id}", (int id, User user, AppDbContext context) => UpdateUser(id, user, context));
             endpoints.MapDelete("/users/{id}", DeleteUser);
@@ -70,7 +71,8 @@ namespace server.Controllers
                     e.Title,
                     e.Start,
                     e.End,
-                    e.AllDay
+                    e.AllDay,
+                    ExtendedProps = e.User != null ? new { user = e.User.Name } : null,
                 })
                 .ToListAsync();
 

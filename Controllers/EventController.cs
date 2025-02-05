@@ -26,6 +26,7 @@ namespace server.Controllers
                     e.Start,
                     e.End,
                     e.AllDay,
+                    ExtendedProps = e.User != null ? new { user = e.User.Name } : null,
                     User = e.User != null ? new
                     {
                         e.User.UserId,
@@ -42,13 +43,14 @@ namespace server.Controllers
         {
             var calendarEvent = await context.Events
                 .Include(e => e.User)
-                .Select(e=> new
+                .Select(e => new
                 {
                     e.EventId,
                     e.Title,
                     e.Start,
                     e.End,
                     e.AllDay,
+                    ExtendedProps = e.User != null ? new { e.User.Name } : null,
                     User = e.User != null ? new
                     {
                         e.User.UserId,

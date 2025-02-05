@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.Models;
+using System.Text.Json;
 
 namespace server.DB
 {
@@ -74,6 +75,7 @@ namespace server.DB
         //            Start = DateTime.UtcNow,
         //            End = DateTime.UtcNow.AddDays(1),
         //            AllDay = false,
+        //            ExtendedProps = JsonSerializer.Serialize(new { user = users[0].Name }),
         //            User = users[0]
         //        },
         //        new Event
@@ -82,6 +84,7 @@ namespace server.DB
         //            Start = DateTime.UtcNow.AddDays(2),
         //            End = DateTime.UtcNow.AddDays(3),
         //            AllDay = true,
+        //             ExtendedProps = JsonSerializer.Serialize(new { user = users[1].Name }),
         //            User = users[1]
         //        },
         //        new Event
@@ -90,6 +93,7 @@ namespace server.DB
         //            Start = DateTime.UtcNow.AddDays(4),
         //            End = DateTime.UtcNow.AddDays(5),
         //            AllDay = false,
+        //            ExtendedProps = JsonSerializer.Serialize(new { user = users[2].Name }),
         //            User = users[2]
         //        },
         //        new Event
@@ -98,6 +102,7 @@ namespace server.DB
         //            Start = DateTime.UtcNow.AddDays(6),
         //            End = DateTime.UtcNow.AddDays(7),
         //            AllDay = true,
+        //            ExtendedProps = JsonSerializer.Serialize(new { user = users[3].Name }),
         //            User = users[3]
         //        },
         //        new Event
@@ -106,10 +111,11 @@ namespace server.DB
         //            Start = DateTime.UtcNow.AddDays(8),
         //            End = DateTime.UtcNow.AddDays(9),
         //            AllDay = false,
+        //            ExtendedProps = JsonSerializer.Serialize(new { user = users[0].Name }),
         //            User = users[0]
         //        }
         //    };
-        //
+
         //    context.Users.AddRange(users);
         //    context.Events.AddRange(events);
         //    context.SaveChanges();
