@@ -81,7 +81,7 @@ namespace server.Controllers
             calendarEvent.End = updateCalendarEvent.End;
             calendarEvent.AllDay = updateCalendarEvent.AllDay;
             calendarEvent.Title = updateCalendarEvent.Title;
-            calendarEvent.User = updateCalendarEvent.User;
+            calendarEvent.UserId = updateCalendarEvent.UserId;
 
             context.Events.Update(calendarEvent);
             await context.SaveChangesAsync();
