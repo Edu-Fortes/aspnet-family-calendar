@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using server.DB;
+using server.DTO;
 using server.Models;
 
 namespace server.Controllers
@@ -11,7 +12,7 @@ namespace server.Controllers
             endpoints.MapGet("/events", GetAllCalendarEvents);
             endpoints.MapGet("/events/{id}", GetCalendarEvent);
             endpoints.MapPost("/events", CreateCalendarEvent);
-            endpoints.MapPut("/events/{id}", (int id, Event calendatEvent, AppDbContext context) => UpdateCalendarEvent(id, calendatEvent, context));
+            endpoints.MapPatch("/events/{id}", (int id, UpdateEventDto calendarEvent, AppDbContext context) => UpdateCalendarEvent(id, calendarEvent, context));
             endpoints.MapDelete("/events/{id}", DeleteCalendarEvent);
         }
 
@@ -74,18 +75,16 @@ namespace server.Controllers
             return Results.Created($"/events/{calendarEvent.EventId}", calendarEvent);
         }
 
-        public static async Task<IResult> UpdateCalendarEvent(int id, Event updateCalendarEvent, AppDbContext context)
+        public static async Task<IResult> UpdateCalendarEvent(int id, UpdateEventDto updateCalendarEvent, AppDbContext context)
         {
             var calendarEvent = await context.Events.FindAsync(id);
             if (calendarEvent == null) return Results.NotFound();
+            if (updateCalendarEvent.Title != null) calendarEvent.Title = updateCalendarEvent.Title;
+            if (updateCalendarEvent.Start != null) calendarEvent.Start = updateCalendarEvent.Start.Value.ToUniversalTime();
+            if (updateCalendarEvent.End != null) calendarEvent.End = updateCalendarEvent.End.Value.ToUniversalTime();
+            if (updateCalendarEvent.AllDay != null) calendarEvent.AllDay = updateCalendarEvent.AllDay.Value;
+            if (updateCalendarEvent.UserId.HasValue) calendarEvent.UserId = updateCalendarEvent.UserId.Value;
 
-            calendarEvent.Start = updateCalendarEvent.Start;
-            calendarEvent.End = updateCalendarEvent.End;
-            calendarEvent.AllDay = updateCalendarEvent.AllDay;
-            calendarEvent.Title = updateCalendarEvent.Title;
-            calendarEvent.UserId = updateCalendarEvent.UserId;
-
-            context.Events.Update(calendarEvent);
             await context.SaveChangesAsync();
             return Results.Ok(calendarEvent);
         }
