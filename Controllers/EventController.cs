@@ -95,7 +95,7 @@ namespace server.Controllers
             if (calendarEvent == null) return Results.NotFound();
             context.Events.Remove(calendarEvent);
             await context.SaveChangesAsync();
-            return Results.NoContent();
+            return Results.Ok();
         }
     }
 }
